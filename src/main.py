@@ -16,6 +16,7 @@ if __name__ == "__main__":
     model_type = 'neural_network'
     model_config = config[model_type]
     model = ModelFactory.get_model(model_type, X_train, Y_train, model_config)
+
     Y_pred = model.predict(X_test)
 
     # Evaluation
@@ -29,4 +30,4 @@ if __name__ == "__main__":
     results = pd.DataFrame(y_test_pred, columns=['score'])
     results.to_csv("./results/Data_Challenge_MDI_341.csv", header=None, index=None)
 
-    update_performance_record(model_type, final_score)
+    update_performance_record(model_type, final_score, model.best_epoch)
