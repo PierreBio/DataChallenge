@@ -10,7 +10,7 @@
       "optimizer": "adam",
       "loss": "categorical_crossentropy",
       "metrics": ["accuracy"],
-      "epochs": 20,
+      "epochs": 10,
       "batch_size": 32
     }
   }

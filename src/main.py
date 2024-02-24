@@ -1,6 +1,7 @@
 from src.preprocessing.data_manager import load_data, prepare_data
 from src.models.model_factory import ModelFactory
 from src.postprocessing.evaluator import *
+from src.postprocessing.performance import *
 
 def load_config(path):
     with open(path, 'r') as f:
@@ -18,6 +19,7 @@ if __name__ == "__main__":
 
     Y_pred = model.predict(X_test)
 
+    # Evaluation
     eval_scores, confusion_matrices_eval = gap_eval_scores(Y_pred, Y_test, S_test, metrics=['TPR'])
     final_score = (eval_scores['macro_fscore'] + (1 - eval_scores['TPR_GAP'])) / 2
     print(final_score)
@@ -27,3 +29,5 @@ if __name__ == "__main__":
     y_test_pred = model.predict(X_test_true)
     results = pd.DataFrame(y_test_pred, columns=['score'])
     results.to_csv("./results/Data_Challenge_MDI_341.csv", header=None, index=None)
+
+    update_performance_record(model_type, final_score)
