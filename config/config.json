@@ -7,9 +7,9 @@
       "input_shape": 768,
       "output_units": 28,
       "layers": [
-        {"units": 512, "activation": "relu", "dropout": 0.3},
-        {"units": 256, "activation": "relu", "dropout": 0.3},
-        {"units": 128, "activation": "relu"}
+        {"units": 512, "activation": "leaky_relu", "dropout": 0.3},
+        {"units": 256, "activation": "leaky_relu", "dropout": 0.3},
+        {"units": 128, "activation": "leaky_relu"}
       ],
       "output_activation": "softmax",
       "optimizer": "adam",
@@ -18,5 +18,10 @@
       "metrics": ["accuracy"],
       "epochs": 15,
       "batch_size": 32
+    },
+    "svm": {
+      "kernel": "linear",
+      "C": 1.0,
+      "random_state": 0
     }
   }

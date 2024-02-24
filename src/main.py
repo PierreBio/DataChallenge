@@ -13,7 +13,7 @@ if __name__ == "__main__":
     dat = load_data('./data/data-challenge-student.pickle')
     X_train, X_test, Y_train, Y_test, S_train, S_test = prepare_data(dat)
 
-    model_type = 'neural_network'
+    model_type = 'svm'
     model_config = config[model_type]
     model = ModelFactory.get_model(model_type, X_train, Y_train, model_config)
 
@@ -30,4 +30,4 @@ if __name__ == "__main__":
     results = pd.DataFrame(y_test_pred, columns=['score'])
     results.to_csv("./results/Data_Challenge_MDI_341.csv", header=None, index=None)
 
-    update_performance_record(model_type, final_score, model.best_epoch)
+    update_performance_record(model_type, final_score, model)

@@ -2,7 +2,7 @@ import pandas as pd
 import json
 from datetime import datetime
 
-def update_performance_record(model_type, final_score, best_epoch):
+def update_performance_record(model_type, final_score, model):
     filename = './results/Data_Challenge_Performances.csv'
 
     with open('./config/config.json', 'r') as file:
@@ -13,8 +13,10 @@ def update_performance_record(model_type, final_score, best_epoch):
         'date': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
         'model_type': model_type,
         'final_score': final_score,
-        'best_epoch': best_epoch,
     }
+
+    if model is not None and hasattr(model, 'best_epoch'):
+        record['best_epoch'] = model.best_epoch
 
     record.update(model_params)
 
