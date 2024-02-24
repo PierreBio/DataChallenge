@@ -84,7 +84,7 @@ git clone https://github.com/PierreBio/DataChallenge.git
 - Then go to the root of the project:
 
 ```
-cd EyeFundusVascularSegmentation
+cd DataChallenge
 ```
 
 - Create a virtual environment:

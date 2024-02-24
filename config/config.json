@@ -1,0 +1,16 @@
+{
+    "logistic_regression": {
+      "max_iter": 5000,
+      "random_state": 0
+    },
+    "neural_network": {
+      "input_shape": 768,
+      "num_classes": 28,
+      "first_layer_units": 512,
+      "optimizer": "adam",
+      "loss": "categorical_crossentropy",
+      "metrics": ["accuracy"],
+      "epochs": 20,
+      "batch_size": 32
+    }
+  }
