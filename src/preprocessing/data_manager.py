@@ -1,10 +1,16 @@
 import pandas as pd
-import pickle
 from sklearn.model_selection import train_test_split
 
+import pickle
+
 def load_data(filepath):
+    with open(filepath, 'rb') as file:
+        data = pickle.load(file)
+    if isinstance(data, pd.DataFrame):
+        print(type(data))
     with open(filepath, 'rb') as handle:
         dat = pd.read_pickle(handle)
+        print(dat.keys())
     return dat
 
 def prepare_data(dat, test_size=0.3, random_state=42):

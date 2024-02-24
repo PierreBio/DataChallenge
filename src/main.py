@@ -1,4 +1,4 @@
-from src.preprocessing.data_manager import load_data, prepare_data
+from src.preprocessing.data_manager import *
 from src.models.model_factory import ModelFactory
 from src.postprocessing.evaluator import *
 from src.postprocessing.performance import *
