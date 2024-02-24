@@ -20,8 +20,11 @@
       "batch_size": 32
     },
     "svm": {
-      "kernel": "linear",
-      "C": 1.0,
-      "random_state": 0
+      "kernel": "rbf",
+      "C": 10,
+      "gamma": 1
+    },
+    "naive_bayes": {
+      "type": "GaussianNB"
     }
   }

@@ -13,7 +13,7 @@ if __name__ == "__main__":
     dat = load_data('./data/data-challenge-student.pickle')
     X_train, X_test, Y_train, Y_test, S_train, S_test = prepare_data(dat)
 
-    model_type = 'svm'
+    model_type = 'naive_bayes'
     model_config = config[model_type]
     model = ModelFactory.get_model(model_type, X_train, Y_train, model_config)
 
