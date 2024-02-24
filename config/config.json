@@ -5,12 +5,18 @@
     },
     "neural_network": {
       "input_shape": 768,
-      "num_classes": 28,
-      "first_layer_units": 512,
+      "output_units": 28,
+      "layers": [
+        {"units": 512, "activation": "relu", "dropout": 0.2},
+        {"units": 256, "activation": "relu", "dropout": 0.2},
+        {"units": 128, "activation": "relu"}
+      ],
+      "output_activation": "softmax",
       "optimizer": "adam",
+      "learning_rate": 0.001,
       "loss": "categorical_crossentropy",
       "metrics": ["accuracy"],
-      "epochs": 10,
+      "epochs": 20,
       "batch_size": 32
     }
   }

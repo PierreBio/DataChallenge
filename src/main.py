@@ -14,9 +14,8 @@ if __name__ == "__main__":
     X_train, X_test, Y_train, Y_test, S_train, S_test = prepare_data(dat)
 
     model_type = 'neural_network'
-    model_params = config[model_type]
-    model = ModelFactory.get_model(model_type, X_train, Y_train, **model_params)
-
+    model_config = config[model_type]
+    model = ModelFactory.get_model(model_type, X_train, Y_train, model_config)
     Y_pred = model.predict(X_test)
 
     # Evaluation

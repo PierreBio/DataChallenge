@@ -1,2 +1,2 @@
-date;model_type;final_score;input_shape;num_classes;first_layer_units;optimizer;loss;metrics;epochs;batch_size
-2024-02-24 11:13:15;neural_network;0.7274533946296468;768;28;512;adam;categorical_crossentropy;['accuracy'];10;32
+date;model_type;final_score;input_shape;output_units;layers;output_activation;optimizer;learning_rate;loss;metrics;epochs;batch_size
+2024-02-24 11:24:06;neural_network;0.7261713242366677;768;28;[{'units': 512, 'activation': 'relu', 'dropout': 0.2}, {'units': 256, 'activation': 'relu', 'dropout': 0.2}, {'units': 128, 'activation': 'relu'}];softmax;adam;0.001;categorical_crossentropy;['accuracy'];20;32
