@@ -28,6 +28,6 @@ if __name__ == "__main__":
     S_test_true = dat['S_test']
     y_test_pred = model.predict(X_test_true)
     results = pd.DataFrame(y_test_pred, columns=['score'])
-    results.to_csv("./results/Data_Challenge_MDI_341.csv", header=None, index=None)
+    results.to_csv("./results/Data_Challenge_MDI_341_" + str(final_score) + ".csv", header=None, index=None)
 
     update_performance_record(model_type, final_score, model)
