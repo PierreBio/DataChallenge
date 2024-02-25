@@ -1,7 +1,12 @@
 {
     "logistic_regression": {
+      "penalty": "l2",
+      "C": 1.0,
+      "solver": "lbfgs",
       "max_iter": 5000,
-      "random_state": 0
+      "multi_class": "multinomial",
+      "random_state": 42,
+      "class_weight": "balanced"
     },
     "neural_network": {
       "input_shape": 768,
