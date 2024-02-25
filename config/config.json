@@ -7,17 +7,17 @@
       "input_shape": 768,
       "output_units": 28,
       "layers": [
-        {"units": 512, "activation": "leaky_relu", "dropout": 0.3},
-        {"units": 256, "activation": "leaky_relu", "dropout": 0.3},
-        {"units": 128, "activation": "leaky_relu"}
+        {"units": 512, "activation": "relu", "dropout": 0.3},
+        {"units": 256, "activation": "relu", "dropout": 0.3},
+        {"units": 128, "activation": "relu"}
       ],
       "output_activation": "softmax",
       "optimizer": "adam",
       "learning_rate": 0.0001,
       "loss": "categorical_crossentropy",
       "metrics": ["accuracy"],
-      "epochs": 15,
-      "batch_size": 32
+      "epochs": 50,
+      "batch_size": 128
     },
     "svm": {
       "kernel": "rbf",
@@ -32,5 +32,15 @@
       "learning_rate": 0.001,
       "max_depth": 1,
       "random_state": 42
+    },
+    "random_forest": {
+      "class_weight": "balanced",
+      "n_estimators": 75,
+      "max_depth": 200,
+      "max_features" : 50,
+      "min_samples_split": 10,
+      "min_samples_leaf": 5,
+      "random_state": 42,
+      "n_jobs": -1
     }
   }
