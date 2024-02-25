@@ -13,6 +13,6 @@ def load_data(filepath):
         print(dat.keys())
     return dat
 
-def prepare_data(dat, test_size=0.3, random_state=42):
+def prepare_data(dat, test_size=0.5, random_state=42):
     X_train, X_test, Y_train, Y_test, S_train, S_test = train_test_split(dat['X_train'], dat['Y'], dat['S_train'], test_size=test_size, random_state=random_state)
     return X_train, X_test, Y_train, Y_test, S_train, S_test

@@ -1,4 +1,4 @@
-from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.optimizers import Adam
@@ -41,7 +41,8 @@ class NeuralNetworkModel(BaseModel):
         Y_train_one_hot = to_categorical(Y_train, num_classes=config['output_units'])
         best_epoch_callback = BestEpochCallback()
         early_stopping = EarlyStopping(monitor='val_loss', patience=10, verbose=1, restore_best_weights=True)
-        self.model.fit(X_train, Y_train_one_hot, epochs=config['epochs'], batch_size=config['batch_size'], validation_split=0.1, callbacks=[best_epoch_callback, early_stopping])
+        reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=10, min_lr=0.00001, verbose=1)
+        self.model.fit(X_train, Y_train_one_hot, epochs=config['epochs'], batch_size=config['batch_size'], validation_split=0.1, callbacks=[best_epoch_callback, early_stopping, reduce_lr])
         self.best_epoch = best_epoch_callback.best_epoch
 
     def predict(self, X_test):

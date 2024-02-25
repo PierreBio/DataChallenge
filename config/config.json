@@ -13,11 +13,11 @@
       ],
       "output_activation": "softmax",
       "optimizer": "adam",
-      "learning_rate": 0.0001,
+      "learning_rate": 0.00001,
       "loss": "categorical_crossentropy",
       "metrics": ["accuracy"],
-      "epochs": 50,
-      "batch_size": 128
+      "epochs": 200,
+      "batch_size": 512
     },
     "svm": {
       "kernel": "rbf",
