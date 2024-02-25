@@ -1,7 +1,10 @@
 C;algorithm;batch_size;best_epoch;class_weight;date;degree;epochs;final_score;gamma;input_shape;kernel;layers;learning_rate;loss;max_depth;max_features;max_iter;metric;metrics;min_samples_leaf;min_samples_split;model_type;n_estimators;n_jobs;n_neighbors;optimizer;output_activation;output_units;p;random_state;type;var_smoothing;weights
 ;;32.0;;;2024-02-24 12:57:19;;15.0;0.7572554199603618;;768.0;;[{'units': 512, 'activation': 'relu', 'dropout': 0.3}, {'units': 256, 'activation': 'relu', 'dropout': 0.3}, {'units': 128, 'activation': 'relu'}];0.0001;categorical_crossentropy;;;;;['accuracy'];;;neural_network;;;;adam;softmax;28.0;;;;;
+;;2048.0;97.0;;2024-02-25 12:00:06;;100.0;0.7493583287191956;;768.0;;[{'units': 512, 'activation': 'relu', 'dropout': 0.3}, {'units': 256, 'activation': 'relu', 'dropout': 0.3}, {'units': 128, 'activation': 'relu'}];0.0001;categorical_crossentropy;;;;;['accuracy'];;;neural_network;;;;adam;softmax;28.0;;;;;
 ;;512.0;52.0;;2024-02-25 10:47:26;;100.0;0.748787605499653;;768.0;;[{'units': 512, 'activation': 'relu', 'dropout': 0.3}, {'units': 256, 'activation': 'relu', 'dropout': 0.3}, {'units': 128, 'activation': 'relu'}];0.0001;categorical_crossentropy;;;;;['accuracy'];;;neural_network;;;;adam;softmax;28.0;;;;;
 ;;64.0;;;2024-02-24 12:36:52;;25.0;0.7445642018109936;;768.0;;[{'units': 512, 'activation': 'relu', 'dropout': 0.2}, {'units': 256, 'activation': 'relu', 'dropout': 0.2}, {'units': 128, 'activation': 'relu'}];0.0001;categorical_crossentropy;;;;;['accuracy'];;;neural_network;;;;adam;softmax;28.0;;;;;
+;;2048.0;147.0;;2024-02-25 12:05:13;;150.0;0.7429304624022235;;768.0;;[{'units': 512, 'activation': 'relu', 'dropout': 0.3}, {'units': 256, 'activation': 'relu', 'dropout': 0.3}, {'units': 128, 'activation': 'relu'}];0.0001;categorical_crossentropy;;;;;['accuracy'];;;neural_network;;;;adam;softmax;28.0;;;;;
+;;32.0;102.0;;2024-02-25 11:56:21;;300.0;0.7425242433283858;;768.0;;[{'units': 512, 'activation': 'relu', 'dropout': 0.3}, {'units': 256, 'activation': 'relu', 'dropout': 0.3}, {'units': 128, 'activation': 'relu'}];0.0001;categorical_crossentropy;;;;;['accuracy'];;;neural_network;;;;adam;softmax;28.0;;;;;
 ;;32.0;12.0;;2024-02-24 14:47:41;;15.0;0.7411163902787998;;768.0;;[{'units': 512, 'activation': 'relu', 'dropout': 0.3}, {'units': 256, 'activation': 'relu', 'dropout': 0.3}, {'units': 128, 'activation': 'relu'}];0.0001;categorical_crossentropy;;;;;['accuracy'];;;neural_network;;;;adam;softmax;28.0;;;;;
 ;;64.0;;;2024-02-24 12:45:26;;15.0;0.7410352140401115;;768.0;;[{'units': 512, 'activation': 'tanh', 'dropout': 0.2}, {'units': 256, 'activation': 'tanh', 'dropout': 0.2}, {'units': 128, 'activation': 'tanh'}];0.0001;categorical_crossentropy;;;;;['accuracy'];;;neural_network;;;;adam;softmax;28.0;;;;;
 ;;128.0;31.0;;2024-02-25 10:45:40;;50.0;0.7395820416241441;;768.0;;[{'units': 512, 'activation': 'relu', 'dropout': 0.3}, {'units': 256, 'activation': 'relu', 'dropout': 0.3}, {'units': 128, 'activation': 'relu'}];0.0001;categorical_crossentropy;;;;;['accuracy'];;;neural_network;;;;adam;softmax;28.0;;;;;
@@ -82,8 +85,8 @@ C;algorithm;batch_size;best_epoch;class_weight;date;degree;epochs;final_score;ga
 ;;32.0;27.0;;2024-02-24 14:04:16;;50.0;0.7160321241115606;;768.0;;[{'units': 512, 'activation': 'relu', 'dropout': 0.8}, {'units': 256, 'activation': 'relu', 'dropout': 0.8}, {'units': 128, 'activation': 'relu'}];0.0001;categorical_crossentropy;;;;;['accuracy'];;;neural_network;;;;adam;softmax;28.0;;;;;
 ;;32.0;;;2024-02-24 12:08:45;;50.0;0.7160302376390175;;768.0;;[{'units': 512, 'activation': 'relu', 'dropout': 0.2}, {'units': 256, 'activation': 'relu', 'dropout': 0.2}, {'units': 128, 'activation': 'relu'}];1e-05;categorical_crossentropy;;;;;['accuracy'];;;neural_network;;;;adam;softmax;28.0;;;;;
 ;;64.0;;;2024-02-24 12:49:54;;25.0;0.7142549902681075;;768.0;;[{'units': 512, 'activation': 'relu', 'dropout': 0.2}, {'units': 512, 'activation': 'relu', 'dropout': 0.2}, {'units': 256, 'activation': 'relu', 'dropout': 0.2}, {'units': 256, 'activation': 'relu', 'dropout': 0.2}, {'units': 128, 'activation': 'relu', 'dropout': 0.2}, {'units': 128, 'activation': 'relu'}];0.0001;categorical_crossentropy;;;;;['accuracy'];;;neural_network;;;;adam;softmax;28.0;;;;;
-1.0;;;;;2024-02-24 15:55:47;;;0.7125674474041342;;;linear;;;;;;;;;;;svm;;;;;;;;0.0;;;
 1.0;;;;;2024-02-24 15:12:10;;;0.7125674474041342;;;linear;;;;;;;;;;;svm;;;;;;;;0.0;;;
+1.0;;;;;2024-02-24 15:55:47;;;0.7125674474041342;;;linear;;;;;;;;;;;svm;;;;;;;;0.0;;;
 ;;32.0;;;2024-02-24 11:42:23;;5.0;0.7116088718343465;;768.0;;[{'units': 512, 'activation': 'relu', 'dropout': 0.2}, {'units': 256, 'activation': 'relu', 'dropout': 0.2}, {'units': 128, 'activation': 'relu'}];0.001;categorical_crossentropy;;;;;['accuracy'];;;neural_network;;;;adam;softmax;28.0;;;;;
 ;;128.0;28.0;;2024-02-24 14:27:04;;50.0;0.7109068325805787;;768.0;;[{'units': 512, 'activation': 'relu', 'dropout': 0.3}, {'units': 512, 'activation': 'relu', 'dropout': 0.3}, {'units': 256, 'activation': 'relu', 'dropout': 0.3}, {'units': 256, 'activation': 'relu', 'dropout': 0.3}, {'units': 128, 'activation': 'relu', 'dropout': 0.2}, {'units': 128, 'activation': 'relu', 'dropout': 0.2}];0.0001;categorical_crossentropy;;;;;['accuracy'];;;neural_network;;;;adam;softplus;28.0;;;;;
 1.0;;;;;2024-02-24 16:01:06;;;0.7071823445327203;;;sigmoid;;;;;;;;;;;svm;;;;;;;;0.0;;;
@@ -104,10 +107,10 @@ C;algorithm;batch_size;best_epoch;class_weight;date;degree;epochs;final_score;ga
 ;auto;;;;2024-02-25 10:41:46;;;0.6366919136877224;;;;;;;;;;minkowski;;;;knn;;;5.0;;;;2.0;;;;uniform
 ;auto;;;;2024-02-25 10:43:11;;;0.6360439557638093;;;;;;;;;;minkowski;;;;knn;;;10.0;;;;2.0;;;;distance
 ;;512.0;99.0;;2024-02-25 10:49:15;;100.0;0.6353124559567234;;768.0;;[{'units': 512, 'activation': 'relu', 'dropout': 0.3}, {'units': 256, 'activation': 'relu', 'dropout': 0.3}, {'units': 128, 'activation': 'relu'}];1e-05;categorical_crossentropy;;;;;['accuracy'];;;neural_network;;;;adam;softmax;28.0;;;;;
+;;;;balanced;2024-02-25 10:27:25;;;0.6334955366623434;;;;;;;150.0;15.0;;;;5.0;10.0;random_forest;75.0;-1.0;;;;;;42.0;;;
 ;;;;balanced;2024-02-25 10:25:09;;;0.6334955366623434;;;;;;;125.0;15.0;;;;5.0;10.0;random_forest;75.0;-1.0;;;;;;42.0;;;
 ;;;;balanced;2024-02-25 10:27:48;;;0.6334955366623434;;;;;;;200.0;15.0;;;;5.0;10.0;random_forest;75.0;-1.0;;;;;;42.0;;;
 ;;;;balanced;2024-02-25 10:24:53;;;0.6334955366623434;;;;;;;100.0;15.0;;;;5.0;10.0;random_forest;75.0;-1.0;;;;;;42.0;;;
-;;;;balanced;2024-02-25 10:27:25;;;0.6334955366623434;;;;;;;150.0;15.0;;;;5.0;10.0;random_forest;75.0;-1.0;;;;;;42.0;;;
 ;;;;balanced;2024-02-25 10:35:12;;;0.6329830661526404;;;;;;;200.0;50.0;;;;5.0;10.0;random_forest;100.0;-1.0;;;;;;42.0;;;
 ;auto;;;;2024-02-25 10:42:32;;;0.6322995551355264;;;;;;;;;;minkowski;;;;knn;;;15.0;;;;2.0;;;;uniform
 ;;;;balanced;2024-02-25 10:25:34;;;0.6312903594869288;;;;;;;125.0;15.0;;;;5.0;10.0;random_forest;80.0;-1.0;;;;;;42.0;;;
@@ -119,12 +122,12 @@ C;algorithm;batch_size;best_epoch;class_weight;date;degree;epochs;final_score;ga
 ;;;;balanced;2024-02-25 10:25:54;;;0.6224072371070756;;;;;;;125.0;20.0;;;;5.0;10.0;random_forest;75.0;-1.0;;;;;;42.0;;;
 ;;;;balanced;2024-02-25 10:24:31;;;0.6221797222689083;;;;;;;100.0;15.0;;;;5.0;10.0;random_forest;55.0;-1.0;;;;;;42.0;;;
 ;;256.0;49.0;;2024-02-24 14:18:16;;50.0;0.6210101814232737;;768.0;;[{'units': 512, 'activation': 'relu', 'dropout': 0.4}, {'units': 256, 'activation': 'relu', 'dropout': 0.4}, {'units': 128, 'activation': 'relu'}];1e-05;categorical_crossentropy;;;;;['accuracy'];;;neural_network;;;;adam;softmax;28.0;;;;;
-;;;;balanced;2024-02-25 10:24:04;;;0.6203001749283191;;;;;;;100.0;15.0;;;;5.0;10.0;random_forest;50.0;-1.0;;;;;;42.0;;;
 ;;;;balanced;2024-02-25 10:23:25;;;0.6203001749283191;;;;;;;100.0;15.0;;;;5.0;5.0;random_forest;50.0;-1.0;;;;;;42.0;;;
+;;;;balanced;2024-02-25 10:24:04;;;0.6203001749283191;;;;;;;100.0;15.0;;;;5.0;10.0;random_forest;50.0;-1.0;;;;;;42.0;;;
 ;;;;balanced;2024-02-25 10:26:28;;;0.6164851712541708;;;;;;;125.0;15.0;;;;1.0;10.0;random_forest;75.0;-1.0;;;;;;42.0;;;
 ;;;;balanced;2024-02-25 10:23:41;;;0.6156940710478092;;;;;;;100.0;20.0;;;;5.0;5.0;random_forest;50.0;-1.0;;;;;;42.0;;;
-;;;;;2024-02-25 09:40:42;;;0.6119848987935217;;;;;;;100.0;;;;;;;random_forest;50.0;-1.0;;;;;;42.0;;;
 ;;;;;2024-02-25 09:45:54;;;0.6119848987935217;;;;;;;100.0;;;;;;;random_forest;50.0;-1.0;;;;;;42.0;;;
+;;;;;2024-02-25 09:40:42;;;0.6119848987935217;;;;;;;100.0;;;;;;;random_forest;50.0;-1.0;;;;;;42.0;;;
 ;;;;;2024-02-25 09:41:36;;;0.6119848987935217;;;;;;;200.0;;;;;;;random_forest;50.0;-1.0;;;;;;42.0;;;
 ;;;;balanced;2024-02-25 10:27:02;;;0.6116823208354716;;;;;;;125.0;15.0;;;;7.0;10.0;random_forest;75.0;-1.0;;;;;;42.0;;;
 ;;;;balanced;2024-02-25 10:26:46;;;0.610073121590351;;;;;;;125.0;15.0;;;;3.0;10.0;random_forest;75.0;-1.0;;;;;;42.0;;;
