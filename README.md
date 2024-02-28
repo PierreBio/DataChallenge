@@ -1,4 +1,4 @@
-# DataChallenge
+# Data Challenge 2024
 
 ![logo_data_challenge](https://github.com/PierreBio/DataChallenge/assets/45881846/8e962398-670c-40b8-ae51-4fecbc9fe7f6)
 
