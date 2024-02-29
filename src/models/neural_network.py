@@ -40,8 +40,8 @@ class NeuralNetworkModel(BaseModel):
     def train(self, X_train, Y_train, config):
         Y_train_one_hot = to_categorical(Y_train, num_classes=config['output_units'])
         best_epoch_callback = BestEpochCallback()
-        early_stopping = EarlyStopping(monitor='val_loss', patience=50, verbose=1, restore_best_weights=True)
-        reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=20, min_lr=0.0000001, verbose=1)
+        early_stopping = EarlyStopping(monitor='val_loss', patience=70, verbose=1, restore_best_weights=True)
+        reduce_lr = ReduceLROnPlateau(monitor='val_loss', factor=0.05, patience=30, min_lr=0.00000001, verbose=1)
         self.model.fit(X_train, Y_train_one_hot, epochs=config['epochs'], batch_size=config['batch_size'], validation_split=0.1, callbacks=[best_epoch_callback, early_stopping, reduce_lr])
         self.best_epoch = best_epoch_callback.best_epoch
 

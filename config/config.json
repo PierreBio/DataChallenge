@@ -21,7 +21,7 @@
       "learning_rate": 0.0001,
       "loss": "categorical_crossentropy",
       "metrics": ["accuracy"],
-      "epochs": 200,
+      "epochs": 400,
       "batch_size": 32
     },
     "svm": {
