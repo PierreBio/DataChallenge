@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
+from sklearn.utils.class_weight import compute_sample_weight
 
 from imblearn.over_sampling import SMOTE
 import pickle
@@ -23,5 +24,6 @@ def prepare_data(dat, test_size=0.5, random_state=42):
 
     smote = SMOTE(random_state=random_state)
     X_train_resampled, Y_train_resampled = smote.fit_resample(X_train, Y_train)
+    weights = compute_sample_weight(class_weight='balanced', y=Y_train_resampled)
 
-    return X_train_resampled, X_test, Y_train_resampled, Y_test, S_train, S_test
+    return X_train_resampled, X_test, Y_train_resampled, Y_test, S_train, S_test, weights
