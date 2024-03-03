@@ -8,9 +8,10 @@ from src.models.svm import SVMModel
 
 class ModelFactory:
     @staticmethod
-    def get_model(model_type, X_train, Y_train, config):
+    def get_model(model_type, X_train, Y_train, S_train, config, weights=None):
         if model_type == 'neural_network':
-            return NeuralNetworkModel(X_train, Y_train, config)
+            config['weights'] = weights
+            return NeuralNetworkModel(X_train, Y_train, S_train, config)
         elif model_type == 'logistic_regression':
             return LogisticRegressionModel(X_train, Y_train, **config)
         elif model_type == 'svm':
