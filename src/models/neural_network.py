@@ -19,7 +19,7 @@ class BestEpochCallback(Callback):
             self.best_epoch = epoch
 
 class NeuralNetworkModel(BaseModel):
-    def __init__(self, X_train, Y_train, config):
+    def __init__(self, X_train, Y_train, S_train, config):
         super().__init__()
         self.model = self._build_model(config)
         self.best_epoch = 0

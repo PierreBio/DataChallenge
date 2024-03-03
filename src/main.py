@@ -15,8 +15,7 @@ if __name__ == "__main__":
 
     model_type = 'neural_network'
     model_config = config[model_type]
-    model_config['weights'] = weights
-    model = ModelFactory.get_model(model_type, X_train, Y_train, model_config)
+    model = ModelFactory.get_model(model_type, X_train, Y_train, S_train, model_config, weights)
 
     Y_pred = model.predict(X_test)
 
