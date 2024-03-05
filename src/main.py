@@ -55,7 +55,8 @@ if __name__ == "__main__":
 
     #---------------------------------------------------------
     kmeans_augmenter = KMeansFeatures(n_clusters=28)  # You can adjust the number of clusters
-    base_lr = LogisticRegression(solver='lbfgs', max_iter=5000, C=0.1, class_weight= class_weights)
+    class_weights_dict = {class_label: weight for class_label, weight in zip(np.unique(Y_train), class_weights)}
+    base_lr = LogisticRegression(solver='lbfgs', max_iter=5000, C=0.1, class_weight= class_weights_dict)
     ovr_classifier = OneVsRestClassifier(base_lr)
 
     # Build the pipeline
