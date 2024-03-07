@@ -34,7 +34,8 @@ if __name__ == "__main__":
     config = load_config('./config/config.json')
 
     dat = load_data('./data/data-challenge-student.pickle')
-    X_train, X_test, X_test_pca, Y_train, Y_test, S_train, S_test, class_weights, sample_weights = prepare_data(dat)
+    X_train, X_test, Y_train, Y_test, S_train, S_test, class_weights, sample_weights = prepare_data(dat)
+
     #X_train, X_test, Y_train, Y_test, S_train, S_test = prepare_data_resample(dat)
     # Initialisation du scaler
     #scaler = MinMaxScaler()
@@ -56,7 +57,7 @@ if __name__ == "__main__":
     #---------------------------------------------------------
     kmeans_augmenter = KMeansFeatures(n_clusters=28)  # You can adjust the number of clusters
     class_weights_dict = {class_label: weight for class_label, weight in zip(np.unique(Y_train), class_weights)}
-    base_lr = LogisticRegression(solver='lbfgs', max_iter=5000, C=0.1, class_weight= class_weights_dict)
+    base_lr = LogisticRegression(solver='lbfgs', max_iter=5000, C=0.1)
     ovr_classifier = OneVsRestClassifier(base_lr)
 
     # Build the pipeline
@@ -70,18 +71,6 @@ if __name__ == "__main__":
 
     # And predict on your test set
     Y_pred = pipeline.predict(X_test)
-    #---------------------------------------------------------
-
-    #base_lr = LogisticRegression(solver='lbfgs', max_iter=5000)
-    # Create the OneVsRestClassifier
-    #model = OneVsRestClassifier(base_lr)
-
-    # Train the model
-    #model .fit(X_train, Y_train)
-
-    # Predict on the test set
-    #Y_pred = model .predict(X_test)
-    #---------------------------------------------------------
 
     # Evaluation
     eval_scores, confusion_matrices_eval = gap_eval_scores(Y_pred, Y_test, S_test, metrics=['TPR'])
