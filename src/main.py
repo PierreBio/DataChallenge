@@ -2,6 +2,7 @@ from src.preprocessing.data_manager import *
 from src.models.model_factory import ModelFactory
 from src.postprocessing.evaluator import *
 from src.postprocessing.performance import *
+import os
 
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.linear_model import LogisticRegression
@@ -10,77 +11,77 @@ from sklearn.pipeline import Pipeline
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.cluster import KMeans
 
-class KMeansFeatures(BaseEstimator, TransformerMixin):
-    def __init__(self, n_clusters=10):
-        self.n_clusters = n_clusters
-        self.kmeans = KMeans(n_clusters=self.n_clusters)
-
-    def fit(self, X, y=None):
-        # Fit KMeans to the data
-        self.kmeans.fit(X)
-        return self  # Return the object itself to allow chaining
-
-    def transform(self, X):
-        # Predict cluster assignments for samples
-        clusters = self.kmeans.predict(X)
-        # Augment the features with cluster assignments
-        return np.hstack((X, clusters.reshape(-1, 1)))
+from sklearn.cluster import SpectralClustering
+from sklearn.metrics.pairwise import rbf_kernel
+import numpy as np
+import pandas as pd
+from scipy.sparse import csgraph
+from sklearn.cluster import DBSCAN
 
 def load_config(path):
     with open(path, 'r') as f:
         return json.load(f)
 
 if __name__ == "__main__":
-    config = load_config('./config/config.json')
-
     dat = load_data('./data/data-challenge-student.pickle')
-    X_train, X_test, Y_train, Y_test, S_train, S_test, class_weights, sample_weights = prepare_data(dat)
 
-    #X_train, X_test, Y_train, Y_test, S_train, S_test = prepare_data_resample(dat)
-    # Initialisation du scaler
-    #scaler = MinMaxScaler()
-    # Ajustement du scaler sur les données d'entraînement uniquement
-    #scaler.fit(X_train)
+    import os
+    import shutil
 
-    # Transformation des ensembles d'entraînement et de test
-    #X_train_scaled = scaler.transform(X_train)
-    #X_test_scaled = scaler.transform(X_test)
-    # encoder, decoder = train_denoising_autoencoder(X_train, 768, 128, config['neural_network'])
-    # X_train_encoded = encoder.predict(X_train)
-    # X_test_encoded = encoder.predict(X_test)
+    # Chemin du dossier à nettoyer
+    folder_path = './results'
 
-    #model_type = 'logistic_regression'
-    #model_config = config[model_type]
-    #model = ModelFactory.get_model(model_type, X_train, Y_train, S_train, model_config, class_weights, sample_weights)
-    #Y_pred = model.predict(X_test)  # Ensure to use encoded test data here
+    # Vérifier si le dossier existe
+    if os.path.exists(folder_path):
+        # Supprimer le dossier et tout son contenu
+        shutil.rmtree(folder_path)
 
-    #---------------------------------------------------------
-    kmeans_augmenter = KMeansFeatures(n_clusters=28)  # You can adjust the number of clusters
-    class_weights_dict = {class_label: weight for class_label, weight in zip(np.unique(Y_train), class_weights)}
-    base_lr = LogisticRegression(solver='lbfgs', max_iter=5000, C=0.1)
-    ovr_classifier = OneVsRestClassifier(base_lr)
+    # Recréer le dossier vide
+    os.makedirs(folder_path, exist_ok=True)
 
-    # Build the pipeline
-    pipeline = Pipeline([
-        ('kmeans', kmeans_augmenter),
-        ('classifier', ovr_classifier)
-    ])
+    def load_data(filepath):
+        with open(filepath, 'rb') as file:
+            data = pickle.load(file)
+        if isinstance(data, pd.DataFrame):
+            print(type(data))
+        with open(filepath, 'rb') as handle:
+            dat = pd.read_pickle(handle)
+            print(dat.keys())
+        return dat
+    #Paramètres: C=0.3509037246039834, max_iter=100, tol=0.7515379629797547, solver=lbfgs, multi_class=auto
+    #Score pour le pli courant: 0.7358150100779599
+    #Score moyen sur tous les plis: 0.7374355489608619
+    while True:
+        X_train, X_test, Y_train, Y_test, S_train, S_test = train_test_split(
+            dat['X_train'], dat['Y'], dat['S_train'],
+            test_size=0.2, stratify=np.column_stack([dat['Y'], dat['S_train']])
+        )
 
-    # Now, you can fit your pipeline to the training data
-    pipeline.fit(X_train, Y_train)
+        X_train = pd.DataFrame(X_train)
+        for column in X_train.columns:
+            X_train[column] = winsorize(X_train[column], limits=(0.01, 0.01))
 
-    # And predict on your test set
-    Y_pred = pipeline.predict(X_test)
+        X_train_selected = X_train
+        X_test_selected = X_test
 
-    # Evaluation
-    eval_scores, confusion_matrices_eval = gap_eval_scores(Y_pred, Y_test, S_test, metrics=['TPR'])
-    final_score = (eval_scores['macro_fscore'] + (1 - eval_scores['TPR_GAP'])) / 2
-    print(final_score)
+        base_lr = LogisticRegression(solver='lbfgs', max_iter=100, C=0.3, tol=0.00750, multi_class='auto')
 
-    X_test_true = dat["X_test"]
-    Y_pred = pipeline.predict(X_test_true)  # Ensure to use encoded test data here
+        base_lr.fit(X_train_selected, Y_train)
 
-    results = pd.DataFrame(Y_pred, columns=['score'])
-    results.to_csv("./results/Data_Challenge_MDI_341_" + str(final_score) + ".csv", header=None, index=None)
-    np.savetxt('./results/y_test_challenge_student' + str(final_score) + '.txt', Y_pred, delimiter=',')
-    update_performance_record('pipeline', final_score, pipeline)
+        Y_pred = base_lr.predict(X_test_selected)
+
+        eval_scores, confusion_matrices_eval = gap_eval_scores(Y_pred, Y_test, S_test, metrics=['TPR'])
+        final_score = (eval_scores['macro_fscore'] + (1 - eval_scores['TPR_GAP'])) / 2
+        print("FINAL SCORE:")
+        print(final_score)
+
+        output_dir = "./results"
+        os.makedirs(output_dir, exist_ok=True)
+
+        X_test_true_filtered = dat["X_test"]#.iloc[:, selected_features]
+        Y_pred = base_lr.predict(X_test_true_filtered)  # Use the filtered test data
+
+        if(final_score > 0.78):
+            results = pd.DataFrame(Y_pred, columns=['score'])
+            results.to_csv(output_dir + "/Data_Challenge_MDI_341_" + str(final_score) + ".csv", header=None, index=None)
+            np.savetxt(output_dir + '/y_test_challenge_student' + str(final_score) + '.txt', Y_pred, delimiter=',')

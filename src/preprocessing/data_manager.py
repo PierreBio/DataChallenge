@@ -1,3 +1,4 @@
+import random
 import pandas as pd
 import numpy as np
 from scipy.stats.mstats import winsorize
@@ -12,8 +13,21 @@ import scipy.stats as stats
 from scipy.stats import shapiro
 from imblearn.over_sampling import SMOTE
 import pickle
-from sklearn.preprocessing import PowerTransformer
-from sklearn.ensemble import IsolationForest
+from src.postprocessing.evaluator import *
+from deap import base, creator, tools, algorithms
+from sklearn.linear_model import LogisticRegression
+
+from imblearn.over_sampling import ADASYN
+from sklearn.cluster import KMeans
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.preprocessing import StandardScaler
+import numpy as np
+from sklearn.manifold import TSNE
+import matplotlib.pyplot as plt
+import sklearn
+from functools import partial
+from sklearn.model_selection import cross_val_score
+
 def load_data(filepath):
     with open(filepath, 'rb') as file:
         data = pickle.load(file)
@@ -24,29 +38,52 @@ def load_data(filepath):
         print(dat.keys())
     return dat
 
-from imblearn.over_sampling import ADASYN
-from sklearn.cluster import KMeans
-from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.preprocessing import StandardScaler
-import numpy as np
-from sklearn.manifold import TSNE
-import matplotlib.pyplot as plt
-import sklearn
-
 def prepare_data(dat, test_size=0.5, random_state=42, winsorize_limits=(0.01, 0.01)):
     X_train, X_test, Y_train, Y_test, S_train, S_test = train_test_split(
         dat['X_train'], dat['Y'], dat['S_train'],
-        test_size=test_size, random_state=random_state, stratify=np.column_stack([dat['Y'], dat['S_train']])
+        test_size=test_size, stratify=np.column_stack([dat['Y'], dat['S_train']])
     )
 
     #explore_data(X_train, Y_train, S_train)
 
+    # Initialisation de DEAP (étapes 1 et 3)
+    creator.create("FitnessMax", base.Fitness, weights=(1.0,))
+    creator.create("Individual", list, fitness=creator.FitnessMax)
+
+    toolbox = base.Toolbox()
+    toolbox.register("attr_bool", random.randint, 0, 1)
+    toolbox.register("individual", tools.initRepeat, creator.Individual, toolbox.attr_bool, len(X_train.columns))
+    toolbox.register("population", tools.initRepeat, list, toolbox.individual)
+    toolbox.register("evaluate", partial(evaluate_individual, X=dat['X_train'], y=dat['Y'], S=dat['S_train'], dat=dat), weights={'accuracy': 0.5, 'equity': 0.5})
+    toolbox.register("mate", tools.cxTwoPoint)
+    toolbox.register("mutate", tools.mutFlipBit, indpb=0.01)
+    toolbox.register("select", tools.selTournament, tournsize=3)
+
+    # Boucle d'évolution (étape 4)
+    population = toolbox.population(n=768)
+    n_gen = 50
+    for gen in range(n_gen):
+        offspring = algorithms.varAnd(population, toolbox, cxpb=0.5, mutpb=0.2)
+        fits = map(toolbox.evaluate, offspring)
+        for fit, ind in zip(fits, offspring):
+            ind.fitness.values = fit
+        population = toolbox.select(offspring, k=len(population))
+
+    # Sélectionnez le meilleur individu
+    best_ind = tools.selBest(population, 1)[0]
+
+    # Filtrez X_train et X_test basé sur les meilleures caractéristiques sélectionnées
+    selected_features_indices = [index for index, bit in enumerate(best_ind) if bit == 1]
+
+    X_train = X_train.iloc[:, selected_features_indices]
+    X_test = X_test.iloc[:, selected_features_indices]
+
     X_train = pd.DataFrame(X_train)
 
-    for column in X_train.columns:
-        lower_bound = X_train[column].quantile(0.01)
-        upper_bound = X_train[column].quantile(0.99)
-        X_train[column] = X_train[column].clip(lower=lower_bound, upper=upper_bound)
+    #for column in X_train.columns:
+    #    lower_bound = X_train[column].quantile(0.01)
+    #   upper_bound = X_train[column].quantile(0.99)
+    #    X_train[column] = X_train[column].clip(lower=lower_bound, upper=upper_bound)
 
     for column in X_train.columns:
         X_train[column] = winsorize(X_train[column], limits=winsorize_limits)
@@ -60,7 +97,35 @@ def prepare_data(dat, test_size=0.5, random_state=42, winsorize_limits=(0.01, 0.
     X_train_resampled = X_train_resampled.astype('float32')
     Y_train_resampled = Y_train_resampled.astype('float32')
 
-    return X_train_resampled, X_test, Y_train_resampled, Y_test, S_train, S_test, class_weights_dict, sample_weights
+    return X_train_resampled, X_test, Y_train_resampled, Y_test, S_train, S_test, class_weights_dict, sample_weights, selected_features_indices
+
+def evaluate_individual(individual, X, y, S, dat, weights={'accuracy': 0.5, 'equity': 0.5}):
+    model = LogisticRegression(solver='lbfgs', max_iter=100, C=1)
+
+    # Sélectionner les caractéristiques basées sur l'individu
+    selected_features = [index for index, bit in enumerate(individual) if bit == 1]
+    X_selected = X.iloc[:, selected_features]
+
+    # Division des données pour l'évaluation, incluant S (attribut protégé)
+    X_train, X_val, y_train, y_val, S_train, S_val = train_test_split(X_selected, y, S, test_size=0.5)
+
+    # Entraîner le modèle sur les caractéristiques sélectionnées
+    model.fit(X_train, y_train)
+    y_pred = model.predict(X_val)
+
+    # Calculer les scores de performance et d'équité en utilisant S_val pour l'évaluation de l'équité
+    eval_scores, _ = gap_eval_scores(y_pred, y_val, S_val, metrics=['TPR'])
+    final_score = (eval_scores['macro_fscore'] + (1 - eval_scores['TPR_GAP'])) / 2
+    print(final_score)
+
+    if(final_score > 0.765):
+        X_test_true_filtered = dat["X_test"].iloc[:, selected_features]
+        Y_pred = model.predict(X_test_true_filtered)
+
+        results = pd.DataFrame(Y_pred, columns=['score'])
+        results.to_csv("./results/Data_Challenge_MDI_341_" + str(final_score) + ".csv", header=None, index=None)
+
+    return final_score,
 
 def explore_data(X_train, Y_train, S_train=None, max_features=20):
     sns.set(style="whitegrid")
@@ -186,3 +251,17 @@ def build_denoising_autoencoder(input_dim):
     autoencoder.compile(optimizer=optimizer, loss='mean_squared_error')
 
     return autoencoder, encoder, decoder
+
+def save_best_features_if_improved(new_score, selected_features, filepath="./results/scores/best_features.json"):
+    try:
+        # Charger le meilleur score et les caractéristiques précédentes
+        with open(filepath, "r") as file:
+            data = json.load(file)
+            best_score = data["score"]
+    except (FileNotFoundError, json.JSONDecodeError):
+        best_score = float("-inf")  # Aucun score précédent trouvé
+
+    # Comparer et sauvegarder si le nouveau score est meilleur
+    if new_score > best_score:
+        with open(filepath, "w") as file:
+            json.dump({"score": new_score, "features": selected_features}, file)
