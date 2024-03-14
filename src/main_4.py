@@ -3,6 +3,7 @@ from src.models.model_factory import ModelFactory
 from src.postprocessing.evaluator import *
 from src.postprocessing.performance import *
 import os
+import optuna
 
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.linear_model import LogisticRegression
@@ -16,6 +17,8 @@ from sklearn.utils import resample
 from sklearn.model_selection import StratifiedKFold
 from sklearn.utils.class_weight import compute_class_weight
 from sklearn.preprocessing import PolynomialFeatures
+from imblearn.over_sampling import BorderlineSMOTE
+from imblearn.over_sampling import ADASYN
 
 class KMeansFeatures(BaseEstimator, TransformerMixin):
     def __init__(self, n_clusters=10):
@@ -124,7 +127,7 @@ if __name__ == "__main__":
 
         X_train, X_test, Y_train, Y_test, S_train, S_test = train_test_split(
             X_train_smote, Y_train_smote, S_train_smote,
-            test_size=0.5, stratify=np.column_stack([Y_train_smote, S_train_smote])
+            test_size = 0.2, stratify=np.column_stack([Y_train_smote, S_train_smote])
         )
 
         '''
@@ -138,9 +141,13 @@ if __name__ == "__main__":
         #poly = PolynomialFeatures(degree=2, interaction_only=True, include_bias=False)
         #X_poly = poly.fit_transform(X_train)
 
-        base_lr = LogisticRegression(solver='lbfgs', max_iter=100, C=0.001, tol=0.00750, multi_class='multinomial')
+        base_lr = LogisticRegression(solver='lbfgs', max_iter=100, C=0.1, tol=0.00750, multi_class='auto')
         base_lr.fit(X_train, Y_train)
         Y_pred = base_lr.predict(X_test)
+
+        #scores = cross_val_score(base_lr, X_train, Y_train, cv=5, scoring='accuracy')
+        #print(f"Accuracy pour chaque fold: {scores}")
+        #print(f"Accuracy moyen: {scores.mean()}")
 
         eval_scores, confusion_matrices_eval = gap_eval_scores(Y_pred, Y_test, S_test, metrics=['TPR'])
         final_score = (eval_scores['macro_fscore'] + (1 - eval_scores['TPR_GAP'])) / 2
@@ -155,7 +162,7 @@ if __name__ == "__main__":
         X_test_true_filtered = dat["X_test"]#.iloc[:, selected_features]
         Y_pred = base_lr.predict(X_test_true_filtered)  # Use the filtered test data
 
-        if(final_score > 0.785):
+        if(final_score > 0.8):
             results = pd.DataFrame(Y_pred, columns=['score'])
             results.to_csv(output_dir + "/Data_Challenge_MDI_341_" + str(final_score) + ".csv", header=None, index=None)
             np.savetxt(output_dir + '/y_test_challenge_student' + str(final_score) + '.txt', Y_pred, delimiter=',')
