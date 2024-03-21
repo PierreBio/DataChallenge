@@ -116,8 +116,12 @@ pip install -r requirements.txt
 py -m src.main
 ```
 
+## Quick launch
+
+- You can use this [Google Collab access](https://colab.research.google.com/drive/1WYNEa71w-SFI7Bxm1YeiYoUsiOXsxxO3?usp=sharing) to run the last version of my code.
+
 ## Results
 
-See [our results](docs/RESULTS.md).
+See [my results](docs/RESULTS.md).
 
 ## Ressources
