@@ -125,3 +125,9 @@ py -m src.main
 See [my results](docs/RESULTS.md).
 
 ## Ressources
+
+- [SMOTE](https://arxiv.org/pdf/1106.1813.pdf)
+- [Orthogonal Debias](https://aclanthology.org/2021.emnlp-main.411.pdf)
+- [Debias Gender](https://arxiv.org/pdf/2208.01755.pdf)
+- [Debias Pre-Contectualized Embeddings](https://aclanthology.org/2021.eacl-main.107.pdf)
+- [Debias Imbalanced Pseudo-Labels](https://openaccess.thecvf.com/content/CVPR2022/papers/Wang_Debiased_Learning_From_Naturally_Imbalanced_Pseudo-Labels_CVPR_2022_paper.pdf)
